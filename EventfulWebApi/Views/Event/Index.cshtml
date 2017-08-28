@@ -1,0 +1,69 @@
+﻿@model IEnumerable<EventfulWebApi.Models.EventSearchResults>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.last_item)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.total_items)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.first_item)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.page_number)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.page_size)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.page_items)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.search_time)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.page_count)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.last_item)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.total_items)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.first_item)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.page_number)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.page_size)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.page_items)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.search_time)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.page_count)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>
