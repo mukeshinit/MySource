@@ -5,7 +5,20 @@
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/kendo/kendo.common.min._2016.2.607.css")
+    @Styles.Render("~/Content/kendo/kendo.flat.min.css")
+    @Styles.Render("~/Content/kendo/kendo.dataviz.min.css")
+    @Styles.Render("~/Content/kendo/kendo.dataviz.flat.min.css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    <script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")" type="text/javascript"></script>
+    <script src="~/Scripts/kendo.all.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/kendo.aspnetmvc.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/jszip.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/jfunctions.js" type="text/javascript"></script> 
+    <script src="~/Scripts/jcommon.js" type="text/javascript"></script>
+   
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -35,7 +48,7 @@
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
+   
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>

@@ -1,69 +1,112 @@
-﻿@model IEnumerable<EventfulWebApi.Models.EventSearchResults>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.last_item)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.total_items)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.first_item)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.page_number)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.page_size)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.page_items)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.search_time)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.page_count)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.last_item)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.total_items)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.first_item)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.page_number)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.page_size)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.page_items)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.search_time)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.page_count)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-        </td>
-    </tr>
+﻿@using Kendo.Mvc.UI;
+@using System.Collections.Generic;
+@model EventfulWebApi.Models.Events
+@{
+    ViewBag.Title = "Event Search";
+    AjaxOptions ajaxOpt = new AjaxOptions { UpdateTargetId = "SearchResultsRaw", HttpMethod = "Get", OnBegin = "onEditBegin", OnComplete = "afterSave" };
 }
+<div id="main-content-actual" style="padding-top:50px;" class="float-left object-header-text">
+    <h1><span>Event Calender Search</span> </h1>
 
-</table>
+   @using (Html.BeginForm("Index", "Event", FormMethod.Post))
+   {
+        <div>
+            <div class="fieldCol">
+                <div class="fieldLabelEdit" style="padding-top:15px">Address:</div>
+                <div class="fieldData">@Html.TextArea("Address", new { rows = 3, columns = 10 })</div>
+                <div class="clear-fix"></div>
+                <div class="fieldLabelEdit">Radius:</div>
+                <div class="fieldData">@Html.TextBox("Radius", null, new { @type = "number" })  </div>
+
+                <div class="float-left" style="padding-left: 30px"><input type="button" value="Save" onclick="gatherValues()" /></div>
+               
+              
+                
+            </div>
+
+            <div class="fieldCol2">
+                <div class="fieldLabelEdit">Start Date:</div>
+                <div class="fieldData">
+                    @(Html.Kendo().DatePicker()
+              .Name("Startdtdatepicker")
+              .Value("10/10/2011")
+              .HtmlAttributes(new { style = "width: 100%", title = "datepicker" })
+                    )
+                </div>
+                <div class="clear-fix"></div>
+                <div class="fieldLabelEdit">End Date:</div>
+                <div class="fieldData">
+                    @(Html.Kendo().DatePicker()
+      .Name("enddtdatepicker")
+      .Value("10/10/2011")
+      .HtmlAttributes(new { style = "width: 100%", title = "datepicker" })
+                    )
+
+                </div>
+                <div class="clear-fix"></div>
+                <div class="fieldLabelEdit">Event Catetory:</div>
+                <div class="fieldData">
+                    @if (ViewBag.EventTypes != null)
+                {
+                @(Html.Kendo().DropDownList()
+                    .BindTo((SelectList)ViewBag.EventTypes)
+                     .Name("EventCatetory")
+                  .HtmlAttributes(new { style = "width:203px;" })
+                  .OptionLabel("Select Catetory...")
+                )
+                }                
+            </div>
+        </div>
+    </div>
+    <div class="clear-fix"></div>
+    <div class="subsection_expand">
+        <div>
+            Event Search Results  :
+        </div>
+    </div>
+    <div>
+        @foreach (var item in Model.Event)
+        {
+            @Html.DisplayFor(modelItem => item.country_name)
+        }
+        @(Html.Kendo().Grid(Model.Event)
+                    .Name("AliasesGrid")
+                    .Sortable(sortable => sortable.AllowUnsort(false))
+                    .DataSource(dataSource => dataSource
+                        .Ajax()
+                        .PageSize(20)
+                        .ServerOperation(false)
+                    )
+                    .Columns(columns =>
+                    {
+                        columns.Bound(p => p.venue_name).Title("VenueName").Width(120);
+                        columns.Bound(p => p.title).Title("Title").Width(80);
+                    })
+                    .Scrollable(scr => scr.Height(230))
+                    .Sortable(sortable => sortable.AllowUnsort(false))
+                    .Filterable()
+        )
+    </div>
+
+    <div class="clear-fix"></div>
+    <script type="text/x-kendo-tmpl" id="template">
+        <div class="product">
+            @*<img src="#thumb.url#"  />*@ 
+            <h3>#:title#</h3>
+            <p>#:venue_name#</p>
+            
+        </div>
+    </script>
+    <div class="demo-section k-content wide">
+        @(Html.Kendo().ListView(Model.Event).Name("listView")
+    .TagName("div")
+    .ClientTemplateId("template")
+    .DataSource(dataSource => dataSource
+        .PageSize(20)
+        .ServerOperation(false)
+     )
+    .Pageable()
+        )
+    </div>
+   }
+    </div>

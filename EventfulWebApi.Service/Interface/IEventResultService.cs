@@ -9,7 +9,7 @@ namespace EventfulWebApi.Service.Interface
 
     public interface IEventResultService
     {
-        EventSearchResults eventSearchResults(string address , int radius , DateTime startdate, DateTime enddate, string eventCategory);
+        EventSearchResults GetEventSearchResults(string address , int radius , DateTime startdate, DateTime enddate, string eventCategory);
 
     }
 }

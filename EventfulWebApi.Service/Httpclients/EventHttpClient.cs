@@ -40,7 +40,37 @@ namespace EventfulWebApi.Service.Httpclients
             }
 
             string queryString = queryParams.ToQueryStringAsync();
+            //Task<int> task = GetObjectAsync();
+            //task.Wait();
+            //var x = task.Result;
+            //try
+            //{
+            //    var t = GetObjectAsync<EventSearchResults>($"json/events/search?{queryString}");
+            //}
+            //catch (Exception ex)
+            //{
+
+            //    throw;
+            //}           
+
             return GetObjectAsync<EventSearchResults>($"json/events/search?{queryString}");
+        }
+
+        public EventCategories GetEventCategoryAsync(string clientkey)
+        {
+            // These parameters must be in this order, or else the API will return nothing
+            var queryParams = new Dictionary<string, string>(){                
+                {"app_key", clientkey }
+            };
+
+            // If they are both invalid, then remove them both
+            if (string.IsNullOrWhiteSpace(clientkey))
+            {
+                throw new ArgumentException("radius and eventcategory must both be specified, or both omitted.");
+            }               
+ 
+            string queryString = queryParams.ToQueryStringAsync();
+            return GetObjectAsync<EventCategories>($"json/categories/list?{queryString}");
         }
     }
 }

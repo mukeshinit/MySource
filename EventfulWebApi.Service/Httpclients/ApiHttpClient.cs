@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
@@ -54,14 +55,14 @@ namespace EventfulWebApi.Service.Httpclients
         /// <param name="resourcePath"></param>
         /// <returns></returns>
  
-        protected async Task<IReadOnlyCollection<T>> GetCollectionAsync<T>(string resourcePath)
+        protected IReadOnlyCollection<T> GetCollectionAsync<T>(string resourcePath)
         {
-            string jsonString = await SendAsync(HttpMethod.Get, resourcePath);
-
+            //string jsonString = await SendAsync(HttpMethod.Get, resourcePath);
+            string jsonString = SendRequest(resourcePath);
             // Unpack the root object and dig out the json array
             JToken root = JObject.Parse(jsonString);
             string objectString = root.First.First.ToString();
-            return await Task.Run(() => JsonConvert.DeserializeObject<IReadOnlyCollection<T>>(objectString));
+            return   JsonConvert.DeserializeObject<IReadOnlyCollection<T>>(objectString) ;
         }
 
         /// <summary>
@@ -86,17 +87,19 @@ namespace EventfulWebApi.Service.Httpclients
         /// <typeparam name="T"></typeparam>
         /// <param name="resourcePath"></param>
         /// <returns></returns>       
-
+       
         protected T GetObjectAsync<T>(string resourcePath)
         {
+            
             string jsonString = SendRequest(resourcePath);
-            //string jsonString = await SendAsync(HttpMethod.Get, resourcePath);
+            //string jsonString = await SendAsync1(HttpMethod.Get, resourcePath);
             var settings = new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            };
-            return JsonConvert.DeserializeObject<T>(jsonString,settings);
+                MissingMemberHandling = MissingMemberHandling.Ignore  
+            }; 
+            return JsonConvert.DeserializeObject<T>(jsonString, settings);
+
         }
          
         /// <summary>
@@ -123,15 +126,15 @@ namespace EventfulWebApi.Service.Httpclients
         protected async Task<string> SendAsync(HttpMethod method, string resourcePath)
         {
             HttpResponseMessage response = null;
+            HttpClient client = new HttpClient();
             try
             {
-                var client = new HttpClient();
                 Uri baseUri = new Uri(BaseAddress.AbsoluteUri);
                 Uri absoluteUri = new Uri(baseUri, resourcePath);
 
                 HttpRequestMessage request = new HttpRequestMessage(method, absoluteUri.AbsoluteUri);
 
-                response = await client.SendAsync(request, HttpCompletionOption.ResponseContentRead, new CancellationToken());
+                response = await client.SendAsync(request);
                 response.EnsureSuccessStatusCode();
                 return await response.Content.ReadAsStringAsync();
             }
@@ -140,33 +143,43 @@ namespace EventfulWebApi.Service.Httpclients
 
                 return null;
             }
-            
+            finally {
+                
+            }
+
         }
         protected string SendRequest(string resourcePath)
         {
-
-            var client = new HttpClient();
-            Uri baseUri = new Uri(BaseAddress.AbsoluteUri);
-            Uri absoluteUri = new Uri(baseUri, resourcePath);            
-
-            var response = client.GetAsync(absoluteUri).Result;
+            HttpClient client = new HttpClient();
             string res = "";
-            using (HttpContent content = response.Content)
+            try
             {
-                // Read the string.
-                Task<string> result = content.ReadAsStringAsync();
-                res = result.Result;
+                Uri baseUri = new Uri(BaseAddress.AbsoluteUri);
+                Uri absoluteUri = new Uri(baseUri, resourcePath);
+
+                var response = client.GetAsync(absoluteUri).Result;
+                 
+                using (HttpContent content = response.Content)
+                {
+                    // Read the string.
+                    Task<string> result = content.ReadAsStringAsync();
+                    res = result.Result;
+                }
+            }
+            catch(Exception ex)
+            {
+                return null;
             }
 
             return res;
         }
 
-       
+
         #region IDisposable Support
 
         private bool disposedValue = false; // To detect redundant calls
 
-        //This code added to correctly implement the disposable pattern.
+        ////This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.

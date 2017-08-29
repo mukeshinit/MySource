@@ -15,7 +15,8 @@ namespace EventfulWebApi.Service.Service
 {
     public class EventService : IEventResultService
     {
-        public EventSearchResults eventSearchResults(string address, int radius, DateTime startdate, DateTime enddate,
+         
+        public EventSearchResults GetEventSearchResults(string address, int radius, DateTime startdate, DateTime enddate,
             string eventcategory)
         {
             try
@@ -27,7 +28,7 @@ namespace EventfulWebApi.Service.Service
             {
                 return null;
             }
-        }
+            }
             
     }
 }

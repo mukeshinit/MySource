@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EventfulWebApi.Config;
+using EventfulWebApi.Logging;
 using EventfulWebApi.Models;
 using EventfulWebApi.Service.Httpclients;
-using EventfulWebApi.Logging;
 using log4net.Core;
-using System.Threading;
-using EventfulWebApi.Config;
-using EventfulWebApi.Service.Interface;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 namespace EventfulWebApi.Service
@@ -23,7 +18,6 @@ namespace EventfulWebApi.Service
         {
             EventfulApiUrl = !string.IsNullOrWhiteSpace(ConfigProvider.Instance.EventfulApiUrl) ?
                 ConfigProvider.Instance.EventfulApiUrl : @"http://api.eventful.com/";
-            RequestTime = new Stopwatch();
         }
 
         /// <summary>
@@ -38,8 +32,6 @@ namespace EventfulWebApi.Service
         {
             var retry = true;
             var retryCount = 0;
-            //string EventfulApiUrl = !string.IsNullOrWhiteSpace(ConfigProvider.Instance.EventfulApiUrl) ?
-            //    ConfigProvider.Instance.EventfulApiUrl : @"http://api.eventful.com/";
 
             while (retry == true)
             {
@@ -48,8 +40,8 @@ namespace EventfulWebApi.Service
                     using (var client = new ApiHttpClient(new Uri(EventfulApiUrl)))
                     {
                         EventSearchResults eventSearchResults = client.GetEventsAsync
-                            (address, radius, startdate, enddate, eventcategory, 
-                            ConfigProvider.Instance.EventFulClientKey);  
+                            (address, radius, startdate, enddate, eventcategory,
+                            ConfigProvider.Instance.EventFulClientKey);
 
                         //Verifies that the the server
                         if (eventSearchResults == null)
@@ -110,6 +102,29 @@ namespace EventfulWebApi.Service
             }
             return null;
         }
-    
+        public EventCategories GetCategory()
+        {
+            try
+            {
+                using (var client = new ApiHttpClient(new Uri(EventfulApiUrl)))
+                {
+                    EventCategories eventCategory = client.GetEventCategoryAsync(ConfigProvider.Instance.EventFulClientKey);
+                    //Verifies that the the server
+                    if (eventCategory != null)
+                    {
+                        return eventCategory;
+                    }                    
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Log(Level.Error,
+                        "Error getting event search data. This was the last attempt and will not try agian." + Environment.NewLine +
+                        "Error message: " + e.Message + Environment.NewLine +
+                        "StackTrace: " + e.StackTrace, null, e);
+                 
+            }
+            return null;
+        }
     }
 }

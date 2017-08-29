@@ -10,8 +10,11 @@ namespace EventfulWebApi.Models
     public class EventCategory
     {
         public string name { get; set; }
-        public string event_count { get; set; }
         public string id { get; set; }
     }
-    
+    public class EventCategories
+    {
+        public List<EventCategory> category { get; set; }
+    }
+
 }

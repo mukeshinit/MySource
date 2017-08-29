@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EventfulWebApi.Models
 {
@@ -83,12 +81,10 @@ namespace EventfulWebApi.Models
         public string venue_name { get; set; }
         public string venue_url { get; set; }
     }
-
     public class Events
     {
         public List<Event> Event { get; set; }
     }
-
     public class EventSearchResults
     {
         public int? last_item { get; set; }
@@ -98,7 +94,7 @@ namespace EventfulWebApi.Models
         public int page_size { get; set; }
         public int? page_items { get; set; }
         public float search_time { get; set; }
-        public int page_count { get; set; }
+        public int page_count { get; set; }       
         public Events events { get; set; }
     }
 }

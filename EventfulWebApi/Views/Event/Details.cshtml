@@ -1,0 +1,332 @@
+﻿@model EventfulWebApi.Models.Event
+
+<div>
+    <h4>Event</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.watching_count)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.watching_count)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.olson_path)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.olson_path)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.calendar_count)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.calendar_count)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.comment_count)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.comment_count)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.region_abbr)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.region_abbr)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.postal_code)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.postal_code)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.going_count)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.going_count)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.all_day)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.all_day)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.latitude)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.latitude)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.groups)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.groups)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.url)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.url)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.privacy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.privacy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.city_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.city_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.link_count)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.link_count)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.longitude)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.longitude)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.country_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.country_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.country_abbr)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.country_abbr)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.region_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.region_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.start_time)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.start_time)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tz_id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tz_id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.modified)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.modified)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.venue_display)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.venue_display)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tz_country)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tz_country)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.performers)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.performers)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.venue_address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.venue_address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.geocode_type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.geocode_type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tz_olson_path)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tz_olson_path)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.recur_string)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.recur_string)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.calendars)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.calendars)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.owner)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.owner)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.going)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.going)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.country_abbr2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.country_abbr2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.created)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.created)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.venue_id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.venue_id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tz_city)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tz_city)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.stop_time)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.stop_time)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.venue_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.venue_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.venue_url)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.venue_url)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
