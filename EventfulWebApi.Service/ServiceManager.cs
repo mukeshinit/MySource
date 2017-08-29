@@ -7,17 +7,22 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
+using EventfulWebApi.Models.Models;
 namespace EventfulWebApi.Service
 {
     public class ServiceManager
     {
         private string EventfulApiUrl { get; set; }
+        private string GoogleGeoApiUrl { get; set; }
         private Stopwatch RequestTime { get; set; }
 
         public ServiceManager()
         {
             EventfulApiUrl = !string.IsNullOrWhiteSpace(ConfigProvider.Instance.EventfulApiUrl) ?
                 ConfigProvider.Instance.EventfulApiUrl : @"http://api.eventful.com/";
+
+            GoogleGeoApiUrl = !string.IsNullOrWhiteSpace(ConfigProvider.Instance.GoogleGeoApiUrl) ?
+               ConfigProvider.Instance.GoogleGeoApiUrl : @"https://maps.googleapis.com/maps/api/";
         }
 
         /// <summary>
@@ -125,6 +130,33 @@ namespace EventfulWebApi.Service
                  
             }
             return null;
+        }
+
+        public GoogleGeocd GetLatLongByAddress(string address)
+        {
+            try
+            {
+                using (var client = new ApiHttpClient(new Uri(GoogleGeoApiUrl)))
+                {
+                    GoogleGeocd geocdresult = client.GetGooglecdresultAsync(address, ConfigProvider.Instance.GoogleApiClientKey);
+                    //Verifies that the the server
+                    if (geocdresult != null)
+                    {
+                        return geocdresult;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Log(Level.Error,
+                        "Error getting event search data. This was the last attempt and will not try agian." + Environment.NewLine +
+                        "Error message: " + e.Message + Environment.NewLine +
+                        "StackTrace: " + e.StackTrace, null, e);
+
+            }
+            return null;
+
+
         }
     }
 }

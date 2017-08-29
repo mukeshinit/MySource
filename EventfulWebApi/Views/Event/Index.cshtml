@@ -8,8 +8,9 @@
 <div id="main-content-actual" style="padding-top:50px;" class="float-left object-header-text">
     <h1><span>Event Calender Search</span> </h1>
 
-   @using (Html.BeginForm("Index", "Event", FormMethod.Post))
-   {
+    @using (Html.BeginForm("Index", "Event", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken();
         <div>
             <div class="fieldCol">
                 <div class="fieldLabelEdit" style="padding-top:15px">Address:</div>
@@ -18,10 +19,14 @@
                 <div class="fieldLabelEdit">Radius:</div>
                 <div class="fieldData">@Html.TextBox("Radius", null, new { @type = "number" })  </div>
 
-                <div class="float-left" style="padding-left: 30px"><input type="button" value="Save" onclick="gatherValues()" /></div>
-               
-              
-                
+                <div style="float:left; margin:0;">
+                    <input id="Vsearch" style="margin-left:8px;margin-right:3px;" type="button" value="Search" onclick="gatherValues()" />
+                </div>
+
+                <div style="display:none">
+                    <input type="submit" value="VerifySearch" id="btnVerifySearch" />
+                </div>
+
             </div>
 
             <div class="fieldCol2">
@@ -48,65 +53,184 @@
                 <div class="fieldData">
                     @if (ViewBag.EventTypes != null)
                 {
-                @(Html.Kendo().DropDownList()
+                    @(Html.Kendo().DropDownList()
                     .BindTo((SelectList)ViewBag.EventTypes)
                      .Name("EventCatetory")
                   .HtmlAttributes(new { style = "width:203px;" })
                   .OptionLabel("Select Catetory...")
-                )
-                }                
+                    )
+                }
+                </div>
             </div>
         </div>
-    </div>
-    <div class="clear-fix"></div>
-    <div class="subsection_expand">
-        <div>
-            Event Search Results  :
-        </div>
-    </div>
-    <div>
-        @foreach (var item in Model.Event)
-        {
-            @Html.DisplayFor(modelItem => item.country_name)
-        }
-        @(Html.Kendo().Grid(Model.Event)
-                    .Name("AliasesGrid")
-                    .Sortable(sortable => sortable.AllowUnsort(false))
-                    .DataSource(dataSource => dataSource
-                        .Ajax()
-                        .PageSize(20)
-                        .ServerOperation(false)
-                    )
-                    .Columns(columns =>
-                    {
-                        columns.Bound(p => p.venue_name).Title("VenueName").Width(120);
-                        columns.Bound(p => p.title).Title("Title").Width(80);
-                    })
-                    .Scrollable(scr => scr.Height(230))
-                    .Sortable(sortable => sortable.AllowUnsort(false))
-                    .Filterable()
-        )
-    </div>
+        <div class="clear-fix"></div>
+        <div class="subsection_expand">
+            <div>
+                Event Search Results  :
+            </div>
 
-    <div class="clear-fix"></div>
-    <script type="text/x-kendo-tmpl" id="template">
-        <div class="product">
-            @*<img src="#thumb.url#"  />*@ 
-            <h3>#:title#</h3>
-            <p>#:venue_name#</p>
+          
+        </div>
+        <div class="fieldData">
+             
+            @*@(Html.Kendo().Grid(Model.Event)
+                            .Name("AliasesGrid")
+                            .Sortable(sortable => sortable.AllowUnsort(false))
+                            .DataSource(dataSource => dataSource
+                                .Ajax()
+                                .PageSize(20)
+                                .ServerOperation(false)
+                            )
+                            .Columns(columns =>
+                            {
+
+                                columns.Bound(p => p.title).Title("VenueName").Width(120);
+                                columns.Bound(p => p.title).Title("Title").Width(80);
+                                columns.Bound(p => p.image.medium.url).Title("city_name").Width(80);
+
+
+                            })
+                            .Scrollable(scr => scr.Height(230))
+                            .Sortable(sortable => sortable.AllowUnsort(false))
+                            .Filterable()
+            )*@
             
         </div>
-    </script>
-    <div class="demo-section k-content wide">
+        <div class="clear-fix"></div>
+        <script type="text/x-kendo-tmpl" id="template">            
+            <div id="list-content"  >
+                <ul id="events-list" >
+                    <li class="fieldData" itemtype="http://schema.org/Event" itemscope="">
+                        <a href="#:url#" class="tn-frame">
+                           @*#:image.thumb.url#*@
+                             
+                            <img src="#= image == null ?  "http://webmaster.ypsa.org/wp-content/uploads/2012/08/no_thumb.jpg" : image.thumb.url #" alt="image" width="80px" height="80px" target='_blank' />
+                            
+                          
+                        </a>
+                        <h4>
+                            <a href="#:url#" title="#:title#" itemprop="url">
+                                <span itemprop="name">
+                                    #:title# 
+                                </span>
+                            </a>
+                        </h4>
+                        <div class="fieldData">
+                            <div  >
+                                <div itemprop="startDate" content="2017-09-09T13:00:00" class="event-date">
+                                    #:start_time#  
+                                </div>  
+
+                                <div class="event-venue">
+                                    <div itemprop="location" itemscope="" itemtype="http://schema.org/Place" class="location">
+                                        <h6 itemprop="name"><a href="#:venue_url#" itemprop="url" data-ga-label="Venue Title Link">#:venue_name#</a></h6>
+
+                                        <p itemprop="address" itemscope="" itemtype="http://schema.org/PostalAddress">
+                                            <span itemprop="streetAddress">#:venue_address#</span><br>
+                                            <span itemprop="addressLocality">#:city_name#</span>, <span itemprop="addressRegion">#:region_name#</span> 
+                                            <span itemprop="postalCode">#:postal_code#</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>   
+                         
+                    </li>
+                    
+
+                </ul>
+            </div>
+        </script>
+        <div class="demo-section k-content wide">
+@if (Model.Event != null)
+{
         @(Html.Kendo().ListView(Model.Event).Name("listView")
-    .TagName("div")
-    .ClientTemplateId("template")
-    .DataSource(dataSource => dataSource
-        .PageSize(20)
-        .ServerOperation(false)
-     )
-    .Pageable()
-        )
-    </div>
-   }
-    </div>
+           .TagName("div")
+           .ClientTemplateId("template")
+           .DataSource(dataSource => dataSource
+               .PageSize(20)
+               .ServerOperation(false)
+            )
+            .Pageable(x =>
+        {
+            x.Enabled(true);
+            x.PreviousNext(true);
+            x.PageSizes(true);
+            x.Info(true);
+            x.Input(false);
+            x.Numeric(true);
+            x.Refresh(false);
+        })
+            )
+    
+}
+        </div>
+
+       
+            <div class="clear-fix" style="padding-bottom:50px; "></div>
+
+         
+    }
+        </div>
+
+<style >
+
+    .search-results {
+        border-top: 1px solid transparent;
+        border-bottom: 1px solid #dbdbdb;
+        border-left: 1px solid #dbdbdb;
+        list-style-type: none;
+        margin-bottom: 0;
+        min-height: 800px;
+        position: relative;
+    }
+ 
+
+    ul li {
+        list-style-type: none;
+    }
+
+    li {
+        line-height: 18px;
+    }
+    ul li div {
+        font-family: Arial;
+         
+        font-weight: bold;
+        font-size: 12px;
+    }
+
+     
+</style>
+
+<script>
+
+    function gatherValues() {
+
+        $("#btnVerifySearch").click();
+
+
+        // $(this).parents('form').submit();
+    }
+
+    
+    function set_most_recent_img_src(val) {
+        alert(val);
+        var a = document.body.getElementsByTagName('IMG');
+        var img = a ? a[a.length - 1] : 0;
+        if (img) img.src = val;
+    }
+    function getImage(url){
+        return new Promise(function (resolve, reject) {
+            var img = new Image()
+            img.onload = function () {
+                resolve(url)
+            }
+            img.onerror = function () {
+                reject(url)
+            }
+            img.src = url
+        })
+    }
+</script>
+  

@@ -8,6 +8,8 @@ using Kendo.Mvc.UI;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using EventfulWebApi.Models.Models;
+using System.Globalization;
 
 namespace EventfulWebApi.Controllers
 {
@@ -15,23 +17,24 @@ namespace EventfulWebApi.Controllers
     {
         private EventService eventService = new EventService();
         private EventCategoryService eventCategoryService = new EventCategoryService();
+        private GoogleGeocdService GoogleService = new GoogleGeocdService();
         protected static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         // GET: Event
         [HttpGet]
         public ActionResult Index()
         {
             EventSearchResults result = null;
-            Events events = null;
+            Events events = new Events();
             try
             {
-                DateTime st = new DateTime(2017, 8, 18);
-                DateTime et = new DateTime(2017, 8, 26);
+                ViewBag.SearchType = "Get";
                 GetEventCatetory();
-               
-                result = eventService.GetEventSearchResults("49.227684,-122.993332", 10,
-                    st, et, "Concerts & Tour Dates");
+                //DateTime st = new DateTime(2017, 8, 18);
+                //DateTime et = new DateTime(2017, 8, 26);
+                //result = eventService.GetEventSearchResults("49.227684,-122.993332", 10,
+                //    st, et, "Concerts & Tour Dates");
 
-                events = result.events;
+                //events = result.events;
 
             }
             catch (Exception ex)
@@ -63,14 +66,26 @@ namespace EventfulWebApi.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ViewD(string search)
+        public ActionResult Index(string search)
         {
-            DateTime st = new DateTime(2017, 8, 18);
-            DateTime et = new DateTime(2017, 8, 26);
-            EventSearchResults result = null;
-            result = eventService.GetEventSearchResults("49.227684,-122.993332", 10,
-                st, et, "Concerts & Tour Dates");
-            return View("Index", result);
+            ViewBag.SearchType = "Post";
+            var Address = Request["Address"];
+            var Radius = Request["Radius"];
+            var Startdtdatepicker = Request["Startdtdatepicker"];
+            var enddtdatepicker = Request["enddtdatepicker"];
+            var EventCatetory = Request["EventCatetory"];
+
+            GoogleGeocd googleGeocd = GoogleService.GetGoogleGeocdResults(Address);
+            var lattitude = Convert.ToString(googleGeocd.results[0].geometry.location.lat, CultureInfo.InvariantCulture);
+            var longitude = Convert.ToString(googleGeocd.results[0].geometry.location.lng, CultureInfo.InvariantCulture);
+           
+            EventSearchResults result = null;  
+            result = eventService.GetEventSearchResults(lattitude+","+ longitude, int.Parse(Radius),
+                DateTime.Parse(Startdtdatepicker), DateTime.Parse(enddtdatepicker), EventCatetory);
+
+            Events events = result.events;
+            GetEventCatetory();
+            return View("Index", events);
         }
         // GET: Event/Create
         public ActionResult Create()

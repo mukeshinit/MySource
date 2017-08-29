@@ -1,15 +1,6 @@
-﻿using EventfulWebApi.Service.Interface;
+﻿using EventfulWebApi.Models;
+using EventfulWebApi.Service.Interface;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EventfulWebApi.Models;
-using EventfulWebApi.Service.Httpclients;
-using EventfulWebApi.Logging;
-using log4net.Core;
-using System.Threading;
-using EventfulWebApi.Config;
 
 namespace EventfulWebApi.Service.Service
 {

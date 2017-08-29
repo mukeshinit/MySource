@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EventfulWebApi.Models;
+﻿using EventfulWebApi.Models;
+using EventfulWebApi.Models.Models;
 using EventfulWebApi.Service.Utils;
-using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 
 
 namespace EventfulWebApi.Service.Httpclients
@@ -19,6 +16,9 @@ namespace EventfulWebApi.Service.Httpclients
                 {"where", geocd },
                 {"within", radius.ToString()},
                 {"category", eventcategory },
+                {"units" ,"km"},                
+                {"page_size" ,"20" },
+                {"page_number" ,"10" },
                 {"date", startDate.ToString("yyyyMMdd00" , System.Globalization.CultureInfo.InvariantCulture)
                 + "-" + endDate.ToString("yyyyMMdd00", System.Globalization.CultureInfo.InvariantCulture)},
                 {"app_key", clientkey }
@@ -31,6 +31,7 @@ namespace EventfulWebApi.Service.Httpclients
                 if (string.IsNullOrWhiteSpace(radius.ToString()) && string.IsNullOrWhiteSpace(eventcategory))
                 {
                     queryParams.Remove("radius");
+                    queryParams.Remove("units");
                     queryParams.Remove("eventcategory");
                 }
                 else
@@ -59,7 +60,7 @@ namespace EventfulWebApi.Service.Httpclients
         public EventCategories GetEventCategoryAsync(string clientkey)
         {
             // These parameters must be in this order, or else the API will return nothing
-            var queryParams = new Dictionary<string, string>(){                
+            var queryParams = new Dictionary<string, string>(){               
                 {"app_key", clientkey }
             };
 
@@ -71,6 +72,24 @@ namespace EventfulWebApi.Service.Httpclients
  
             string queryString = queryParams.ToQueryStringAsync();
             return GetObjectAsync<EventCategories>($"json/categories/list?{queryString}");
+        }
+
+        public GoogleGeocd GetGooglecdresultAsync(string address, string clientkey)
+        {
+            // These parameters must be in this order, or else the API will return nothing
+            var queryParams = new Dictionary<string, string>(){
+                {"address", address },
+                {"key", clientkey }
+            };
+        
+            // If they are both invalid, then remove them both
+            if (string.IsNullOrWhiteSpace(address))
+            {
+                throw new ArgumentException("Address must both be specified, or both omitted.");
+            }
+
+            string queryString = queryParams.ToQueryStringAsync();
+            return GetObjectAsync<GoogleGeocd>($"geocode/json?{queryString}");
         }
     }
 }

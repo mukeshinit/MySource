@@ -82,10 +82,12 @@
     <Compile Include="Httpclients\EventHttpClient.cs" />
     <Compile Include="Interface\IEventCategoryService.cs" />
     <Compile Include="Interface\IEventResultService.cs" />
+    <Compile Include="Interface\IGoogleGeocdService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceManager.cs" />
     <Compile Include="Service\EventCategoryService.cs" />
     <Compile Include="Service\EventService.cs" />
+    <Compile Include="Service\GoogleGeocdService.cs" />
     <Compile Include="Utils\Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
