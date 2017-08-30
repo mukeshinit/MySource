@@ -63,7 +63,7 @@ namespace EventfulWebApi.Models
         public string modified { get; set; }
         public string venue_display { get; set; }
         public string tz_country { get; set; }
-        public string performers { get; set; }
+       
         public string title { get; set; }
         public string venue_address { get; set; }
         public string geocode_type { get; set; }

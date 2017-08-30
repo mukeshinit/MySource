@@ -54,8 +54,8 @@ namespace EventfulWebApi.Controllers
                 .Select(x =>
                         new SelectListItem
                         {
-                            Value = x.name,
-                            Text = x.name
+                            Value = x.id,
+                            Text = x.id
                         });        
             ViewBag.EventTypes = new SelectList(selectlist.OrderBy(x => x.Value), "Value", "Text");
         }

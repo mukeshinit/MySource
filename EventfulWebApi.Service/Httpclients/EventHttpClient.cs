@@ -15,9 +15,11 @@ namespace EventfulWebApi.Service.Httpclients
             var queryParams = new Dictionary<string, string>(){
                 {"where", geocd },
                 {"within", radius.ToString()},
-                {"category", eventcategory },
+                //{"category", eventcategory },
+                {"keywords", eventcategory },
                 {"units" ,"km"},                
-                {"page_size" ,"20" },
+                {"page_size" ,"50" },                
+                { "sort_order", "date" },
                 {"page_number" ,"10" },
                 {"date", startDate.ToString("yyyyMMdd00" , System.Globalization.CultureInfo.InvariantCulture)
                 + "-" + endDate.ToString("yyyyMMdd00", System.Globalization.CultureInfo.InvariantCulture)},
@@ -32,7 +34,7 @@ namespace EventfulWebApi.Service.Httpclients
                 {
                     queryParams.Remove("radius");
                     queryParams.Remove("units");
-                    queryParams.Remove("eventcategory");
+                    queryParams.Remove("keywords");
                 }
                 else
                 {

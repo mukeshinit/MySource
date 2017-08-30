@@ -33,18 +33,18 @@
                 <div class="fieldLabelEdit">Start Date:</div>
                 <div class="fieldData">
                     @(Html.Kendo().DatePicker()
-              .Name("Startdtdatepicker")
-              .Value("10/10/2011")
-              .HtmlAttributes(new { style = "width: 100%", title = "datepicker" })
+                          .Name("Startdtdatepicker")
+                          .Value("10/10/2011")
+                          .HtmlAttributes(new { style = "width: 100%", title = "datepicker" })
                     )
                 </div>
                 <div class="clear-fix"></div>
                 <div class="fieldLabelEdit">End Date:</div>
                 <div class="fieldData">
                     @(Html.Kendo().DatePicker()
-      .Name("enddtdatepicker")
-      .Value("10/10/2011")
-      .HtmlAttributes(new { style = "width: 100%", title = "datepicker" })
+                      .Name("enddtdatepicker")
+                      .Value("10/10/2011")
+                      .HtmlAttributes(new { style = "width: 100%", title = "datepicker" })
                     )
 
                 </div>
@@ -67,63 +67,35 @@
         <div class="subsection_expand">
             <div>
                 Event Search Results  :
-            </div>
-
-          
-        </div>
-        <div class="fieldData">
-             
-            @*@(Html.Kendo().Grid(Model.Event)
-                            .Name("AliasesGrid")
-                            .Sortable(sortable => sortable.AllowUnsort(false))
-                            .DataSource(dataSource => dataSource
-                                .Ajax()
-                                .PageSize(20)
-                                .ServerOperation(false)
-                            )
-                            .Columns(columns =>
-                            {
-
-                                columns.Bound(p => p.title).Title("VenueName").Width(120);
-                                columns.Bound(p => p.title).Title("Title").Width(80);
-                                columns.Bound(p => p.image.medium.url).Title("city_name").Width(80);
-
-
-                            })
-                            .Scrollable(scr => scr.Height(230))
-                            .Sortable(sortable => sortable.AllowUnsort(false))
-                            .Filterable()
-            )*@
-            
-        </div>
+            </div>          
+        </div>       
         <div class="clear-fix"></div>
         <script type="text/x-kendo-tmpl" id="template">            
-            <div id="list-content"  >
-                <ul id="events-list" >
-                    <li class="fieldData" itemtype="http://schema.org/Event" itemscope="">
-                        <a href="#:url#" class="tn-frame">
-                           @*#:image.thumb.url#*@
-                             
-                            <img src="#= image == null ?  "http://webmaster.ypsa.org/wp-content/uploads/2012/08/no_thumb.jpg" : image.thumb.url #" alt="image" width="80px" height="80px" target='_blank' />
-                            
-                          
-                        </a>
-                        <h4>
-                            <a href="#:url#" title="#:title#" itemprop="url">
-                                <span itemprop="name">
-                                    #:title# 
-                                </span>
-                            </a>
-                        </h4>
-                        <div class="fieldData">
+            <div id="list-content" class="search-results" >
+                <ul id="events-list"  >
+                    <li  itemtype="http://schema.org/Event" itemscope=""  >
+                        <a href="#:url#"   target='_blank'>
+                            <img src="#= image == null ?  "http://webmaster.ypsa.org/wp-content/uploads/2012/08/no_thumb.jpg" : image.thumb.url #" alt="image" width="80px" height="80px" />
+
+                        </a><div>
+    <h3>
+
+        <a href="#:url#" title="#:title#" itemprop="url" target='_blank'>
+            <span itemprop="name">
+                #:title#
+            </span>
+        </a>
+    </h3>
+</div>
+                        <div  >
                             <div  >
-                                <div itemprop="startDate" content="2017-09-09T13:00:00" class="event-date">
+                                <div itemprop="startDate" content="2017-09-09T13:00:00" >
                                     #:start_time#  
                                 </div>  
 
-                                <div class="event-venue">
-                                    <div itemprop="location" itemscope="" itemtype="http://schema.org/Place" class="location">
-                                        <h6 itemprop="name"><a href="#:venue_url#" itemprop="url" data-ga-label="Venue Title Link">#:venue_name#</a></h6>
+                                <div  >
+                                    <div itemprop="location" itemscope="" itemtype="http://schema.org/Place"  >
+                                        <h3 itemprop="name"><a href="#:venue_url#" itemprop="url" data-ga-label="Venue Title Link"  target='_blank'>#:venue_name#</a></h3>
 
                                         <p itemprop="address" itemscope="" itemtype="http://schema.org/PostalAddress">
                                             <span itemprop="streetAddress">#:venue_address#</span><br>
@@ -134,7 +106,7 @@
                                 </div>
                             </div>
                         </div>   
-                         
+                        <div class="clear-fix"></div>
                     </li>
                     
 
@@ -148,7 +120,7 @@
            .TagName("div")
            .ClientTemplateId("template")
            .DataSource(dataSource => dataSource
-               .PageSize(20)
+               .PageSize(10)
                .ServerOperation(false)
             )
             .Pageable(x =>
@@ -178,16 +150,16 @@
     .search-results {
         border-top: 1px solid transparent;
         border-bottom: 1px solid #dbdbdb;
-        border-left: 1px solid #dbdbdb;
+        
         list-style-type: none;
         margin-bottom: 0;
-        min-height: 800px;
+        min-height: 250px;
         position: relative;
     }
  
 
     ul li {
-        list-style-type: none;
+        list-style-type: none ;
     }
 
     li {
@@ -199,7 +171,50 @@
         font-weight: bold;
         font-size: 12px;
     }
+    #listView {
+        padding: 10px 5px;
+        margin-bottom: -1px;
+        min-height: 510px;
+    }
 
+    .product {
+        float: left;
+        position: relative;
+        width: 200px;
+        height: 300px;
+        margin: 0 5px;
+        padding: 0;
+        
+    }
+
+        .product img {
+            width: 110px;
+            height: 110px;
+        }
+
+        .h3 {
+            margin: 0;
+            padding: 3px 5px 0 0;            
+            overflow: hidden;
+            line-height: 1.1em;
+            font-size: .9em;
+            font-weight: normal;            
+            color: #999;
+        }
+
+        .product p {
+            visibility: hidden;
+        }
+
+         
+
+    .k-listview:after {
+        content: ".";
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden;
+    }
      
 </style>
 
