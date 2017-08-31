@@ -71,7 +71,7 @@ namespace EventfulWebApi.Models
         public string recur_string { get; set; }
         public string calendars { get; set; }
         public string owner { get; set; }
-        public string going { get; set; }
+        
         public string country_abbr2 { get; set; }
         public Image image { get; set; }
         public string created { get; set; }
